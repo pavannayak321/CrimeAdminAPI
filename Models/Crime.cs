@@ -11,7 +11,8 @@ namespace CrimeAdminAPI.Models
         public string CrimeType { get; set; }
         public string Location { get; set; }
         public DateTime Date { get; set; }
-        public string CrimeMedia { get; set; }
+        public string ImageUrl { get; set; }
+        public string CrimeVideo { get; set; }
        
     }
 }

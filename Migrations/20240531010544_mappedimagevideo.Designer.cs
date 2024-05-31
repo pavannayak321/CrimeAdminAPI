@@ -4,6 +4,7 @@ using CrimeAdminAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrimeAdminAPI.Migrations
 {
     [DbContext(typeof(CrimeDbContext))]
-    partial class CrimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240531010544_mappedimagevideo")]
+    partial class mappedimagevideo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,11 +1,16 @@
+using Azure.Storage.Blobs;
 using CrimeAdminAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Add services to the container.
+string azureStorageConnectionString = builder.Configuration.GetSection("AzureStorage:ConnectionString").Value;
+builder.Services.AddSingleton(new BlobServiceClient(azureStorageConnectionString));
+
 builder.Services.AddCors(p => p.AddPolicy("corsPolicy", build =>
 {
     build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();

@@ -4,6 +4,7 @@ using CrimeAdminAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrimeAdminAPI.Migrations
 {
     [DbContext(typeof(CrimeDbContext))]
-    partial class CrimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530173341_addedtheCrimeImageURL")]
+    partial class addedtheCrimeImageURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,11 +54,11 @@ namespace CrimeAdminAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CrimeType")
+                    b.Property<string>("CrimeMedia")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CrimeVideo")
+                    b.Property<string>("CrimeType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
