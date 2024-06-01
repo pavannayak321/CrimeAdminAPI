@@ -57,11 +57,23 @@ namespace CrimeAdminAPI.Controllers
         // PUT: api/Crimes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCrime(int id, Crime crime)
+        public async Task<IActionResult> PutCrime(int id, Crime crime, IFormFile imageFile, IFormFile videoFile)
         {
             if (id != crime.Id)
             {
                 return BadRequest();
+            }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                string imageUrl = await UploadFileToBlobStorageImage(imageFile);
+                crime.ImageUrl = imageUrl;
+            }
+
+            if (videoFile != null && videoFile.Length > 0)
+            {
+                string videoUrl = await UploadFileToBlobStorageVideo(videoFile);
+                crime.CrimeVideo = videoUrl;
             }
 
             _context.Entry(crime).State = EntityState.Modified;
@@ -83,6 +95,7 @@ namespace CrimeAdminAPI.Controllers
             }
 
             return NoContent();
+        
         }
 
         // POST: api/Crimes
