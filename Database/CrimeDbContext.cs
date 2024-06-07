@@ -14,6 +14,7 @@ namespace CrimeAdminAPI.Database
         public DbSet<CrimeAdminAPI.Models.User>? User { get; set; }
         public DbSet<CrimeAdminAPI.Models.Admin>? Admin { get; set; }
         public DbSet<CrimeAdminAPI.Models.Investigator>? Investigator { get; set; }
+        public DbSet<CrimeAdminAPI.Models.Suspect>? Suspect { get; set; }
     }
 
    

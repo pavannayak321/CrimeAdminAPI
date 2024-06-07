@@ -2,6 +2,15 @@
   "dependencies": {
     "apis1": {
       "type": "apis"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "AzureStorage:ConnectionString",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:CrimeDbConnection"
     }
   }
 }
