@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CrimeAdminAPI.Database;
 using CrimeAdminAPI.Models;
 using Microsoft.AspNetCore.Cors;
+using NuGet.Protocol.Plugins;
 
 namespace CrimeAdminAPI.Controllers
 {
@@ -123,5 +124,29 @@ namespace CrimeAdminAPI.Controllers
         {
             return (_context.Admin?.Any(e => e.AdminId == id)).GetValueOrDefault();
         }
+
+        // POST: api/Admins/login
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            if (_context.Admin == null)
+            {
+                return Problem("Entity set 'CrimeDbContext.Admin' is null.");
+            }
+
+            var admin = await _context.Admin.FirstOrDefaultAsync(a => a.AdminName== loginRequest.Username && a.AdminPassword == loginRequest.Password);
+
+            if (admin == null)
+            {
+                return Unauthorized(new { message = "Invalid username or password." });
+            }
+
+            return Ok(new { message = "Login successful." });
+        }
+    }
+    public class LoginRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

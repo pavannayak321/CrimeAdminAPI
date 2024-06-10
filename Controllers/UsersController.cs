@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CrimeAdminAPI.Database;
 using CrimeAdminAPI.Models;
+using Azure.Storage.Blobs;
 
 namespace CrimeAdminAPI.Controllers
 {
@@ -15,10 +16,12 @@ namespace CrimeAdminAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly CrimeDbContext _context;
-
-        public UsersController(CrimeDbContext context)
+        private readonly BlobServiceClient _blobServiceClient;
+        private readonly string _containerNameForImage = "userimages"; // Replace with your container name
+        public UsersController(CrimeDbContext context, BlobServiceClient blobServiceClient)
         {
             _context = context;
+            _blobServiceClient= blobServiceClient;
         }
 
         // GET: api/Users
@@ -59,7 +62,7 @@ namespace CrimeAdminAPI.Controllers
             {
                 return BadRequest();
             }
-
+            
             _context.Entry(user).State = EntityState.Modified;
 
             try
@@ -84,12 +87,20 @@ namespace CrimeAdminAPI.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser([FromForm] User user, IFormFile imageFile)
         {
           if (_context.User == null)
           {
               return Problem("Entity set 'CrimeDbContext.User'  is null.");
           }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                string imageUrl = await UploadFileToBlobStorageImage(imageFile);
+                user.UserImage = imageUrl;
+            }
+
+
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
@@ -119,6 +130,17 @@ namespace CrimeAdminAPI.Controllers
         private bool UserExists(int id)
         {
             return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
+        }
+
+        private async Task<string> UploadFileToBlobStorageImage(IFormFile file)
+        {
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient(_containerNameForImage);
+            var blobClient = blobContainerClient.GetBlobClient(Guid.NewGuid().ToString() + Path.GetExtension(file.FileName));
+            using (var stream = file.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, true);
+            }
+            return blobClient.Uri.ToString();
         }
     }
 }

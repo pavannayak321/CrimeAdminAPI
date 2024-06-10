@@ -4,20 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Add services to the container.
 string azureStorageConnectionString = builder.Configuration.GetSection("AzureStorage:ConnectionString").Value;
+
 builder.Services.AddSingleton(new BlobServiceClient(azureStorageConnectionString));
 
 builder.Services.AddCors(p => p.AddPolicy("corsPolicy", build =>
 {
     build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 }));
-    
-builder.Services.AddDbContext<CrimeDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("CrimeDbConnection")));
+
+builder.Services.AddDbContext<CrimeDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CrimeDbConnection")));
 
 
 builder.Services.AddControllers();
