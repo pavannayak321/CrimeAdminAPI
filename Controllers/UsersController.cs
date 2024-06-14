@@ -149,5 +149,24 @@ namespace CrimeAdminAPI.Controllers
             }
             return blobClient.Uri.ToString();
         }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<User>> Login([FromBody] LoginModel loginModel)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(u => u.UserEmail == loginModel.Email);
+            if (user == null || user.UserPassword != loginModel.Password)
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            // Generate token or handle login logic here
+
+            return Ok(user);
+        }
+    }
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
