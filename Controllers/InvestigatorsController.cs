@@ -132,7 +132,7 @@ namespace CrimeAdminAPI.Controllers
 
 
             var investigator = await _context.Investigator
-                .Where(i => i.InvestigatorName == loginModel.Username && i.InvestigatorPassword == loginModel.Password)
+                .Where(i => i.InvestigatorUsername == loginModel.Username && i.InvestigatorPassword == loginModel.Password)
                 .FirstOrDefaultAsync();
 
             if (investigator == null)

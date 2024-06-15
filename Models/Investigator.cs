@@ -12,8 +12,6 @@ namespace CrimeAdminAPI.Models
         public string InvestigatorConfirmPassword { get; set; }
         public string InvestigatorLocation { get; set; }
         public int AdminId { get; set; }  // Only store the AdminId       
-
-
     }
 
 }
