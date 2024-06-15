@@ -120,5 +120,37 @@ namespace CrimeAdminAPI.Controllers
         {
             return (_context.Investigator?.Any(e => e.InvestigatorId == id)).GetValueOrDefault();
         }
+
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginModelSample loginModel)
+        {
+            if (_context.Investigator == null)
+            {
+                return NotFound();
+            }
+
+
+            var investigator = await _context.Investigator
+                .Where(i => i.InvestigatorName == loginModel.Username && i.InvestigatorPassword == loginModel.Password)
+                .FirstOrDefaultAsync();
+
+            if (investigator == null)
+            {
+                return Unauthorized();
+            }
+
+            // You can add more logic here, such as generating a JWT token
+
+            return Ok();
+        }
+
+
     }
+    public class LoginModelSample
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
 }
