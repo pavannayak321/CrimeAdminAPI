@@ -17,7 +17,7 @@ namespace CrimeAdminAPI.Controllers
     {
         private readonly CrimeDbContext _context;
         private readonly BlobServiceClient _blobServiceClient;
-        private readonly string _containerNameForImage = "crimeimages"; // Replace with your container name
+        private readonly string _containerNameForImage = "crimeimages"; // Replace with your container na
         private readonly string _containerNameForVideo = "crimevideo"; // Replace with your container name
         public CrimesController(CrimeDbContext context, BlobServiceClient blobServiceClient)
         {
